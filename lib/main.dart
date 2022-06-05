@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: DemoClass(),
     );
   }
 }
@@ -97,24 +98,43 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(left: 15,right: 15,top: 15),
+
               child: TextFormField(
+                textDirection: TextDirection.ltr,
                 controller: urgent,
+                textAlignVertical: TextAlignVertical.center,
+                textAlign: TextAlign.left,
                 style: TextStyle(
                   fontSize: 24,
                   color: Colors.blue,
                   fontWeight: FontWeight.w600,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    urgent.text = value.toString();
-                  });
-                },
                 decoration: InputDecoration(
+                  isCollapsed: true,
+
+                  isDense: true, // and add this line
+                  // contentPadding: new EdgeInsets.only(left: 90),
+                  suffixIcon: IconButton(
+                    onPressed: () => urgent.clear(),
+                    icon: Icon(Icons.clear),
+                  ),
                   focusColor: Colors.white,
                   //add prefix icon
-                  prefixIcon: Icon(
-                    Icons.person_outline_rounded,
-                    color: Colors.grey,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: Material(
+                      color: Colors.blue,
+                      shadowColor: Colors.blue,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        bottomLeft: Radius.circular(10)
+                      ),
+                      child: Container(
+                        width: 40,
+                        height: 70,
+
+                      ),
+                    ),
                   ),
 
                   border: OutlineInputBorder(
@@ -138,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontFamily: "verdana_regular",
                     fontWeight: FontWeight.w400,
                   ),
-
+                  // prefixIconConstraints:BoxConstraints(minWidth: 50, maxHeight: 20),
                   //create lable
                   labelText: 'Urgent and Important',
                   //lable style
@@ -340,7 +360,7 @@ class DemoClass extends StatefulWidget {
 class _DemoClassState extends State<DemoClass> {
   TextEditingController userInput = TextEditingController();
   String text = "";
-
+  List<String> countries = ["Brajshj djshdj hsjsh jdl", "Nepal", "India", "Chisjdh jhsj hjdsh hjs hdna", "USA", "Canada"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -349,72 +369,58 @@ class _DemoClassState extends State<DemoClass> {
       ),
       body: Container(
         padding: EdgeInsets.all(10),
+        height: 65,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  Container(
+                      height: 45,
+                      child:ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: countries.length,
+                        itemBuilder: (context, index) {
+                           return box(countries[index], Colors.deepPurpleAccent , index);
+                        }
+                      )
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.add_circle,size: 30,),
+            )
+          ],
+        )
+      ),
+    );
+  }
+
+  Widget box(String title, Color backgroundcolor,int idex){
+    return GestureDetector(
+      onTap: (){
+        print("IIIII ++ " + idex.toString());
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: backgroundcolor,
+            border: Border.all(
+              color: backgroundcolor,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(20))
+        ),
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.only(left: 7),
+        // color: backgroundcolor,
         child: Column(
           children: [
-            Center(
-              child: Text(
-                "TextFormField In Flutter",
-                style: TextStyle(fontSize: 24),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(15),
-              child: TextFormField(
-                controller: userInput,
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.w600,
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    userInput.text = value.toString();
-                  });
-                },
-                decoration: InputDecoration(
-                  focusColor: Colors.white,
-                  //add prefix icon
-                  prefixIcon: Icon(
-                    Icons.person_outline_rounded,
-                    color: Colors.grey,
-                  ),
-
-                  errorText: "Error",
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                    const BorderSide(color: Colors.blue, width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  fillColor: Colors.grey,
-
-                  hintText: "Email/Mobile",
-
-                  //make hint text
-                  hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                    fontFamily: "verdana_regular",
-                    fontWeight: FontWeight.w400,
-                  ),
-
-                  //create lable
-                  labelText: 'Email/Mobile',
-                  //lable style
-                  labelStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                    fontFamily: "verdana_regular",
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-            Text(userInput.toString()),
+            Text(title, style:TextStyle(
+                color: Colors.white,
+                fontSize: 18)),
           ],
         ),
       ),
